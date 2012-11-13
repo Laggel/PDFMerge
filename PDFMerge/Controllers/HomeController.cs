@@ -29,7 +29,7 @@ namespace PDFMerge.Controllers
             files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con2.pdf"));
             files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con3.pdf"));
             
-            var OutPut = @"C:\Users\Simetri\Dropbox\UNIBE\2013-1\Negocios Electronicos\SLN - Random PDF Merge\Documentos\Result.pdf";
+            var OutPut = @"Result.pdf";
 
             Merge(files.ToArray(), OutPut);
 
