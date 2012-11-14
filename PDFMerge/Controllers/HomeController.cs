@@ -6,13 +6,17 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Web;
 using System.Web.Mvc;
+using PDFMerge.Models;
 
 namespace PDFMerge.Controllers
 {
     public class HomeController : Controller
     {
+        UsersContext db = new UsersContext();
+
         public ActionResult Index()
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
@@ -28,12 +32,75 @@ namespace PDFMerge.Controllers
             files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con1.pdf"));
             files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con2.pdf"));
             files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con3.pdf"));
+            files.Add(GetPdf(@"http://laggel.site90.com/PDF/Tar1.1.pdf"));
             
-            var OutPut = @"Result.pdf";
+            var archivo = Merge(files.ToArray());
+            
+            //string path = @"C:\Somefile.pdf";
+            //WebClient client = new WebClient();
+            Byte[] buffer = ObjectToByteArray(archivo); // client.DownloadData(path);
 
-            Merge(files.ToArray(), OutPut);
+            if (buffer != null)
+            {
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-length", buffer.Length.ToString());
+                Response.BinaryWrite(buffer);
+            }
 
             return View();
+        }
+
+        public ActionResult MergeEdubook(int materia, int curso)
+        {
+            //Get the files name array
+            var files = GetFiles(materia, curso);
+
+            //Merge the PDFs
+            var archivo = Merge(files.ToArray());
+            
+            //Convert to response
+            var buffer = ObjectToByteArray(archivo); 
+
+            if (buffer != null)
+            {
+                Response.ContentType = "application/pdf";
+                Response.AddHeader("content-length", buffer.Length.ToString());
+                Response.BinaryWrite(buffer);
+            }
+
+            return View();
+        }
+
+        public List<MemoryStream> GetFiles(int materia, int curso)
+        {
+            var files = new List<MemoryStream>();
+            var site = "http://laggel.site90.com/PDF/";
+            
+            //Get The Content File
+            files.Add(GetPdf(@String.Format("{0}{1}.{2}.pdf",files,materia,curso)));
+            
+            //Get The Homework file
+            var cnt = db.Recursos.Where(x => x.MateriaId == materia &&
+                                             x.CursoId == curso).Count();
+
+            var rand = new Random().Next(cnt);
+
+            files.Add(GetPdf(@String.Format("{0}{1}.{2}.{3}.pdf", files, materia, curso,rand)));
+            
+            //files.Add(GetPdf(@"http://laggel.site90.com/PDF/Con3.pdf"));
+            //files.Add(GetPdf(@"http://laggel.site90.com/PDF/Tar1.1.pdf"));
+
+            return files;
+        }
+
+        byte[] ObjectToByteArray(Object obj)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                var b = new BinaryFormatter();
+                b.Serialize(ms, obj);
+                return ms.ToArray();
+            }
         }
 
         static MemoryStream GetPdf(string strPDF)
@@ -60,7 +127,7 @@ namespace PDFMerge.Controllers
         /// <summary>
         /// Imports all pages from a list of documents.
         /// </summary>
-        static void Merge(MemoryStream[] files, string filename)
+        static MemoryStream Merge(MemoryStream[] files)
         {
             // Open the output document
             PdfDocument outputDocument = new PdfDocument();
@@ -82,12 +149,16 @@ namespace PDFMerge.Controllers
                 }
             }
 
+            var stream = new MemoryStream();
+            outputDocument.Save(stream);
+            
             // Save the document...
-            outputDocument.Save(filename);
+            //outputDocument.Save(filename);
             // ...and start a viewer.
-            Process.Start(filename);
-        }
+            //Process.Start(filename);
 
+            return stream;
+        }
 
         /// <summary>
         /// Imports all pages from a list of documents.
@@ -134,5 +205,28 @@ namespace PDFMerge.Controllers
 
             return View();
         }
+
+
+
+        public ActionResult Upload()
+        {
+            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            // Verify that the user selected a file
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                FTP.uploadFileUsingFTP("ftp://laggel.site90.com/public_html/PDF/" + fileName, file, "a7673407", "Laggel007");
+            }
+
+            return View();
+        }
+
+        
     }
 }

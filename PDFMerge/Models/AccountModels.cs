@@ -16,6 +16,9 @@ namespace PDFMerge.Models
         }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
+        public DbSet<Materia> Materias { get; set; }
+        public DbSet<Curso> Cursos { get; set; }
+        public DbSet<Recurso> Recursos { get; set; }
     }
 
     [Table("UserProfile")]

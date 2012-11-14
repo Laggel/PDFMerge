@@ -1,0 +1,50 @@
+﻿@model PDFMerge.Models.Recurso
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Recurso</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Comentario)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comentario)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Curso.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Curso.Descripcion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Materia.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Materia.Descripcion)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.RecursoId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

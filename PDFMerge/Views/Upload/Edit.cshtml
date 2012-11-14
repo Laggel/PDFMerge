@@ -1,0 +1,69 @@
+﻿@model PDFMerge.Models.Recurso
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Recurso</legend>
+
+        @Html.HiddenFor(model => model.RecursoId)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentario)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comentario)
+            @Html.ValidationMessageFor(model => model.Comentario)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.codigo)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.codigo)
+            @Html.ValidationMessageFor(model => model.codigo)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CursoId, "Curso")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CursoId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CursoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MateriaId, "Materia")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("MateriaId", String.Empty)
+            @Html.ValidationMessageFor(model => model.MateriaId)
+        </div>
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

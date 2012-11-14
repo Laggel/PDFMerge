@@ -1,0 +1,53 @@
+﻿@model PDFMerge.Models.Recurso
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>Recurso</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Nombre)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Nombre)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Comentario)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Comentario)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.codigo)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.codigo)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Curso.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Curso.Descripcion)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Materia.Descripcion)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Materia.Descripcion)
+    </div>
+</fieldset>
+@using (Html.BeginForm()) {
+    <p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+}

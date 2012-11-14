@@ -1,0 +1,68 @@
+﻿@model PDFMerge.Models.Recurso
+
+@{
+    ViewBag.Title = "Crear Contenido";
+}
+
+<h2>Crear Contenido</h2>
+
+<p>
+    En esta seccion solo se almacena un archivo por tema. En caso de que suba mas de una archivo el anterior sera sustituido.
+</p>
+
+@using (Html.BeginForm("Create", "Upload", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Recurso</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.CursoId, "Curso")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("CursoId", String.Empty)
+            @Html.ValidationMessageFor(model => model.CursoId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.MateriaId, "Materia")
+        </div>
+        <div class="editor-field">
+            @Html.DropDownList("MateriaId", String.Empty)
+            @Html.ValidationMessageFor(model => model.MateriaId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Nombre)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Nombre)
+            @Html.ValidationMessageFor(model => model.Nombre)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comentario)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comentario)
+            @Html.ValidationMessageFor(model => model.Comentario)
+        </div>
+        
+        <div class="editor-field">
+        <input type="file" name="file" />
+        </div>
+
+        <p>
+            <input type="submit" value="Ok" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
